@@ -5,7 +5,6 @@ namespace MaintenanceToolboxBundle\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use MaintenanceToolboxBundle\Model\Task\Status;
 use Pimcore\Maintenance\Executor;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Lock\Factory as LockFactory;
 use Symfony\Component\Lock\PersistingStoreInterface;
 
@@ -15,31 +14,35 @@ class TaskListing
 
     /** @var Executor */
     private $maintenanceExecutor;
-    /** @var LoggerInterface */
-    private $logger;
     /** @var LockFactory */
     private $lockFactory;
-    /** @var PersistingStoreInterface */
-    private $store;
+    /** @var AdapterInterface */
+    private $storeAdapter;
 
     /**
      * TastListing constructor.
      *
-     * @param Executor $maintenanceExecutor
-     * @param LoggerInterface $logger
-     * @param LockFactory $lockFactory
-     * @param PersistingStoreInterface $store
+     * @param Executor $maintenanceExecutor The maintenance executor is needed  to fetch all tasks
+     * @param LockFactory $lockFactory Needed to check the locks on tasks
+     * @param PersistingStoreInterface $store Use this to select the store adapter
+     * @param iterable|AdapterInterface[] $storeAdapters Store adapters are tagged services that will fetch persistent details of lock
      */
     public function __construct(
         Executor $maintenanceExecutor,
-        LoggerInterface $logger,
         LockFactory $lockFactory,
-        PersistingStoreInterface $store
-    ) {
+        PersistingStoreInterface $store,
+        iterable $storeAdapters
+    )
+    {
         $this->maintenanceExecutor = $maintenanceExecutor;
-        $this->logger = $logger;
         $this->lockFactory = $lockFactory;
-        $this->store = $store;
+
+        // Select the correct persistent store adapter
+        foreach ($storeAdapters as $adapter) {
+            if ($adapter->getStoreClassName() === \get_class($store)) {
+                $this->storeAdapter = $adapter;
+            }
+        }
     }
 
     /**
