@@ -119,7 +119,12 @@ class TaskListing
             case 'lock':
                 $compare = static function (Status $a, Status $b) {
                     // compare $b first so the locked jobs are at the top
-                    return $b->isLocked() <=> $a->isLocked();
+                    $compareLock = $b->isLocked() <=> $a->isLocked();
+                    if ($compareLock !== 0) {
+                        return $compareLock;
+                    }
+                    // If lock state is equal sort alphabetically
+                    return strcasecmp($a->getTask(), $b->getTask());
                 };
                 break;
             default:
