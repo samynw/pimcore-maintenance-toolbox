@@ -54,7 +54,7 @@ class ListCommand extends AbstractCommand
         foreach ($this->fetchTasks() as $job) {
             $table->addRow([
                 $job->getTask(),
-                $job->isLocked(),
+                $this->formatBool($job->isLocked()),
             ]);
         }
         $table->render();
@@ -74,5 +74,30 @@ class ListCommand extends AbstractCommand
         }
 
         return $this->taskResource->getTasks();
+    }
+
+    /**
+     * Print a nice boolean value:
+     * - green check or red cross if output can be decorated
+     * - yes/no if output can't be decorated
+     *
+     * @param $state
+     * @return string
+     */
+    private function formatBool($state): string
+    {
+        $decorated = $this->io->getOutput()->isDecorated();
+
+        if ($state) {
+            return sprintf(
+                '<fg=green>%s</>',
+                $decorated ? "\xE2\x9C\x94" : 'yes'
+            );
+        } else {
+            return sprintf(
+                '<fg=red>%s</>',
+                $decorated ? "\xE2\x9D\x8C" : 'no'
+            );
+        }
     }
 }
