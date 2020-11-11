@@ -52,7 +52,6 @@ class ListCommand extends AbstractCommand
     {
         $tasks = $this->getList();
         $showExpirationColumns = $this->shouldShowExpirationColumns($tasks);
-        dump($showExpirationColumns);
 
         $header = ['Maintenance task', 'Locked'];
         if ($showExpirationColumns) {
@@ -63,14 +62,19 @@ class ListCommand extends AbstractCommand
         $rows = [];
         foreach ($tasks as $job) {
             $row = [
-                $job->getTask(),
-                $this->formatBool($job->isLocked()),
+                'name' => $job->getTask(),
+                'locked' => $this->formatBool($job->isLocked()),
             ];
 
             // If needed, add the expiration columns
             if ($showExpirationColumns && $job->isLocked()) {
-                $row[] = $job->getExpirationDate()->format('Y-m-d H:i:s');
-                $row[] = $job->getDurationString();
+                try {
+                    $row['expiration'] = $job->getExpirationDate()->format('Y-m-d H:i:s');
+                    $row['duration'] = $job->getDurationString();
+                } catch (EmptyPropertyException $e) {
+                    // Locked but no timestamp found, must be some weird error
+                    $row['expiration'] = $row['duration'] = 'ERR';
+                }
             }
 
             $rows[] = $row;
@@ -152,16 +156,16 @@ class ListCommand extends AbstractCommand
     {
         foreach ($tasks as $task) {
             // ignore tasks that aren't locked
-            if(!$task->isLocked()){
+            if (!$task->isLocked()) {
                 continue;
             }
 
-            try{
-                if($task->getExpirationDate() instanceof \DateTimeImmutable){
+            try {
+                if ($task->getExpirationDate() instanceof \DateTimeImmutable) {
                     // aha, we found one!
                     return true;
                 }
-            }catch(EmptyPropertyException $e){
+            } catch (EmptyPropertyException $e) {
                 // doesn't hold the predicate for this element
                 continue;
             }
