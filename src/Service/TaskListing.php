@@ -3,6 +3,7 @@
 namespace MaintenanceToolboxBundle\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
 use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
 use MaintenanceToolboxBundle\Model\Task\Status;
 use MaintenanceToolboxBundle\Service\Store\Adapter\AdapterInterface;
@@ -27,15 +28,14 @@ class TaskListing
      * @param Executor $maintenanceExecutor The maintenance executor is needed  to fetch all tasks
      * @param LockFactory $lockFactory Needed to check the locks on tasks
      * @param PersistingStoreInterface $store Use this to select the store adapter
-     * @param iterable|AdapterInterface[] $storeAdapters Store adapters are tagged services that will fetch persistent details of lock
+     * @param iterable|AdapterInterface[] $storeAdapters Store adapters are services that will fetch stored more of lock
      */
     public function __construct(
         Executor $maintenanceExecutor,
         LockFactory $lockFactory,
         PersistingStoreInterface $store,
         iterable $storeAdapters
-    )
-    {
+    ) {
         $this->maintenanceExecutor = $maintenanceExecutor;
         $this->lockFactory = $lockFactory;
 
@@ -141,6 +141,15 @@ class TaskListing
                     if ($compareLock !== 0) {
                         return $compareLock;
                     }
+
+                    try {
+                        // longest duration to shortest
+                        return $b->getDurationSeconds() <=> $a->getDurationSeconds();
+                    } catch (EmptyPropertyException $e) {
+                        // One or more items didn't have an expiration date,
+                        // so continue to the fallback sorting
+                    }
+
                     // If lock state is equal sort alphabetically
                     return strcasecmp($a->getTask(), $b->getTask());
                 };
