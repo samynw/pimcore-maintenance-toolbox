@@ -21,4 +21,17 @@ interface AdapterInterface
      * @return \DateTimeImmutable
      */
     public function getExpirationByKey(Key $key): \DateTimeImmutable;
+
+    /**
+     * Release the lock based on the key
+     * Return the number of rows affected in the store
+     *
+     * If your store doesn't support the count of affected rows
+     * - 0 for error
+     * - 1 for success
+     *
+     * @param Key $key
+     * @return int Return the number of rows that were affected by this action
+     */
+    public function releaseLockByKey(Key $key): int;
 }
