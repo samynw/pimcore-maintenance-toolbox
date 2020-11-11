@@ -3,7 +3,9 @@
 namespace MaintenanceToolboxBundle\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
 use MaintenanceToolboxBundle\Model\Task\Status;
+use MaintenanceToolboxBundle\Service\Store\Adapter\AdapterInterface;
 use Pimcore\Maintenance\Executor;
 use Symfony\Component\Lock\Factory as LockFactory;
 use Symfony\Component\Lock\PersistingStoreInterface;
@@ -61,6 +63,19 @@ class TaskListing
             // If the lock cannot be acquired, the job already is locked
             $status->setLocked(!$lock->acquire());
 
+            // If the task is locked and there's a persistent store adapter
+            // try to fetch the expiration date
+            if ($this->storeAdapter instanceof AdapterInterface && $status->isLocked()) {
+                try {
+                    $status->setExpirationDate(
+                        $this->storeAdapter->getExpirationByKey($status->getKey())
+                    );
+                } catch (LockNotFoundInStoreException $e) {
+                    // Don't set the expiration date
+                    // however this scenario might be fishy: locked but no expiration date?
+                    // Might need to rethink this one
+                }
+            }
             // Add to the collection
             $tasks->add($status);
         }
