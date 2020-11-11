@@ -2,6 +2,7 @@
 
 namespace MaintenanceToolboxBundle\Model\Task;
 
+use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
 use Symfony\Component\Lock\Key;
 
 class Status
@@ -64,10 +65,15 @@ class Status
      * Return the date when the lock will be released
      *
      * @return \DateTimeImmutable
+     * @throws EmptyPropertyException
      */
     public function getExpirationDate(): \DateTimeImmutable
     {
-        return $this->expirationDate;
+        if ($this->expirationDate instanceof \DateTimeImmutable) {
+            return $this->expirationDate;
+        }
+
+        throw EmptyPropertyException::forProperty('expirationDate');
     }
 
     /**
