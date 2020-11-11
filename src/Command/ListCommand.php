@@ -2,6 +2,7 @@
 
 namespace MaintenanceToolboxBundle\Command;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\FetchMode;
 use MaintenanceToolboxBundle\Model\Task\Status;
 use MaintenanceToolboxBundle\Service\TaskListing;
@@ -36,7 +37,8 @@ class ListCommand extends AbstractCommand
     {
         $this
             ->setName('maintenance:list')
-            ->setDescription('List the maintenance jobs');
+            ->setDescription('List the maintenance jobs')
+            ->addOption('locked', null, null, 'Only show locked tasks');
     }
 
     /**
@@ -49,8 +51,7 @@ class ListCommand extends AbstractCommand
         $table = new Table($output);
         $table->setHeaders(['Maintenance task', 'Locked']);
 
-        $tasks = $this->taskResource->getTasks();
-        foreach ($tasks as $key => $job) {
+        foreach ($this->fetchTasks() as $job) {
             $table->addRow([
                 $job->getTask(),
                 $job->isLocked(),
@@ -59,5 +60,19 @@ class ListCommand extends AbstractCommand
         $table->render();
 
         return 0;
+    }
+
+    /**
+     * Fetch the (filtered) set of maintenance tasks
+     *
+     * @return ArrayCollection
+     */
+    private function fetchTasks(): ArrayCollection
+    {
+        if ($this->input->getOption('locked')) {
+            return $this->taskResource->getLockedTasks();
+        }
+
+        return $this->taskResource->getTasks();
     }
 }

@@ -62,4 +62,18 @@ class TaskListing
 
         return $tasks;
     }
+
+    /**
+     * Return a filtered list of tasks, including their locked status
+     * This will only return the locked tasks
+     *
+     * @return ArrayCollection
+     */
+    public function getLockedTasks(): ArrayCollection
+    {
+        $tasks = $this->getTasks();
+        return $tasks->filter(function (Status $jobStatus) {
+            return $jobStatus->isLocked();
+        });
+    }
 }
