@@ -3,6 +3,8 @@
 namespace MaintenanceToolboxBundle\Command;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
+use MaintenanceToolboxBundle\Model\Task\Status;
 use MaintenanceToolboxBundle\Service\TaskListing;
 use Pimcore\Console\AbstractCommand;
 use Symfony\Component\Console\Helper\Table;
@@ -48,15 +50,35 @@ class ListCommand extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $table = new Table($output);
-        $table->setHeaders(['Maintenance task', 'Locked']);
+        $tasks = $this->getList();
+        $showExpirationColumns = $this->shouldShowExpirationColumns($tasks);
+        dump($showExpirationColumns);
 
-        foreach ($this->getList() as $job) {
-            $table->addRow([
+        $header = ['Maintenance task', 'Locked'];
+        if ($showExpirationColumns) {
+            $header[] = 'Lock expiration';
+            $header[] = 'Duration';
+        }
+
+        $rows = [];
+        foreach ($tasks as $job) {
+            $row = [
                 $job->getTask(),
                 $this->formatBool($job->isLocked()),
-            ]);
+            ];
+
+            // If needed, add the expiration columns
+            if ($showExpirationColumns && $job->isLocked()) {
+                $row[] = $job->getExpirationDate()->format('Y-m-d H:i:s');
+                $row[] = $job->getDurationString();
+            }
+
+            $rows[] = $row;
         }
+
+        $table = new Table($output);
+        $table->setHeaders($header);
+        $table->addRows($rows);
         $table->render();
 
         return 0;
@@ -67,7 +89,7 @@ class ListCommand extends AbstractCommand
      * - fetch results
      * - sort list
      *
-     * @return ArrayCollection
+     * @return ArrayCollection|Status[]
      * @throws \Exception
      */
     private function getList(): ArrayCollection
@@ -117,5 +139,34 @@ class ListCommand extends AbstractCommand
                 $decorated ? "\xE2\x9D\x8C" : 'no'
             );
         }
+    }
+
+    /**
+     * Check if the table should be limited to lock status or show the timestamps as well:
+     * - at least one (locked) row should have an expiration date
+     *
+     * @param ArrayCollection|Status[] $tasks
+     * @return bool
+     */
+    private function shouldShowExpirationColumns(ArrayCollection $tasks): bool
+    {
+        foreach ($tasks as $task) {
+            // ignore tasks that aren't locked
+            if(!$task->isLocked()){
+                continue;
+            }
+
+            try{
+                if($task->getExpirationDate() instanceof \DateTimeImmutable){
+                    // aha, we found one!
+                    return true;
+                }
+            }catch(EmptyPropertyException $e){
+                // doesn't hold the predicate for this element
+                continue;
+            }
+        }
+
+        return false;
     }
 }
