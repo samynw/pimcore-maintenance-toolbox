@@ -56,4 +56,22 @@ class PdoAdapter implements AdapterInterface
     {
         return hash('sha256', (string)$key);
     }
+
+    /**
+     * Release the lock based on the key
+     *
+     * @param Key $key
+     * @return int Return the number of rows that were affected by this action
+     */
+    public function releaseLockByKey(Key $key): int
+    {
+        // Build query
+        $sql = "DELETE FROM lock_keys WHERE key_id = :id";
+
+        $stmt = Db::getConnection()->prepare($sql);
+        $stmt->bindValue(':id', $this->generateKeyId($key));
+        $stmt->execute();
+
+        return $stmt->rowCount();
+    }
 }

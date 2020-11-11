@@ -32,5 +32,9 @@ services:
         arguments:
             $storeAdapters: !tagged_iterator maintenance_toolbox.store.adapter
 
+    MaintenanceToolboxBundle\Service\LockManipulator:
+        arguments:
+            $storeAdapters: !tagged_iterator maintenance_toolbox.store.adapter
+
     MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter:
         tags: [ 'maintenance_toolbox.store.adapter' ]
