@@ -11,6 +11,8 @@ use Symfony\Component\Lock\PersistingStoreInterface;
 
 class TaskListing
 {
+    const SORTING_OPTIONS = ['name', 'lock'];
+
     /** @var Executor */
     private $maintenanceExecutor;
     /** @var LoggerInterface */
@@ -75,5 +77,59 @@ class TaskListing
         return $tasks->filter(function (Status $jobStatus) {
             return $jobStatus->isLocked();
         });
+    }
+
+    /**
+     * Validate if the given option is supported
+     *
+     * @param string $option
+     * @return bool
+     */
+    public function validateSortingOption(string $option): bool
+    {
+        if (\in_array($option, self::SORTING_OPTIONS)) {
+            return true;
+        }
+
+        $msg = "The sorting option '%s' is not supported.\n";
+        $msg .= "Please use one of the following options: '%s'";
+        throw new \InvalidArgumentException(sprintf(
+            $msg,
+            $option,
+            implode("', '", self::SORTING_OPTIONS)
+        ));
+    }
+
+    /**
+     * Sort the task resultlist
+     *
+     * @param ArrayCollection $tasks
+     * @param string $sortingOption
+     * @return ArrayCollection
+     * @throws \Exception
+     */
+    public function sortTasks(ArrayCollection $tasks, string $sortingOption): ArrayCollection
+    {
+        switch ($sortingOption) {
+            case 'name':
+                $compare = static function (Status $a, Status $b) {
+                    return strcasecmp($a->getTask(), $b->getTask());
+                };
+                break;
+            case 'lock':
+                $compare = static function (Status $a, Status $b) {
+                    // compare $b first so the locked jobs are at the top
+                    return $b->isLocked() <=> $a->isLocked();
+                };
+                break;
+            default:
+                throw new \InvalidArgumentException(
+                    'Unsupported option ' . $sortingOption
+                );
+        }
+
+        $iterator = $tasks->getIterator();
+        $iterator->uasort($compare);
+        return new ArrayCollection(\iterator_to_array($iterator));
     }
 }

@@ -3,21 +3,12 @@
 namespace MaintenanceToolboxBundle\Command;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\FetchMode;
-use MaintenanceToolboxBundle\Model\Task\Status;
 use MaintenanceToolboxBundle\Service\TaskListing;
 use Pimcore\Console\AbstractCommand;
-use Pimcore\Db;
-use Pimcore\Maintenance\Executor;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Lock\Factory as LockFactory;
-use Symfony\Component\Lock\Key;
-use Symfony\Component\Lock\PersistingStoreInterface;
-use Symfony\Component\Lock\Store\PdoStore;
 
 class ListCommand extends AbstractCommand
 {
@@ -35,10 +26,19 @@ class ListCommand extends AbstractCommand
 
     protected function configure()
     {
+        $sortingOptions = TaskListing::SORTING_OPTIONS;
+
         $this
             ->setName('maintenance:list')
             ->setDescription('List the maintenance jobs')
-            ->addOption('locked', null, null, 'Only show locked tasks');
+            ->addOption('locked', null, null, 'Only show locked tasks')
+            ->addOption(
+                'sort',
+                's',
+                InputOption::VALUE_OPTIONAL,
+                'Sorting of the list. Supported options: ["' . implode('", "', $sortingOptions) . '"]',
+                reset($sortingOptions)
+            );
     }
 
     /**
@@ -51,7 +51,7 @@ class ListCommand extends AbstractCommand
         $table = new Table($output);
         $table->setHeaders(['Maintenance task', 'Locked']);
 
-        foreach ($this->fetchTasks() as $job) {
+        foreach ($this->getList() as $job) {
             $table->addRow([
                 $job->getTask(),
                 $this->formatBool($job->isLocked()),
@@ -60,6 +60,24 @@ class ListCommand extends AbstractCommand
         $table->render();
 
         return 0;
+    }
+
+    /**
+     * Get the list:
+     * - fetch results
+     * - sort list
+     *
+     * @return ArrayCollection
+     * @throws \Exception
+     */
+    private function getList(): ArrayCollection
+    {
+        // Validate options
+        $sorting = $this->input->getOption('sort');
+        $this->taskResource->validateSortingOption($sorting);
+
+        $tasks = $this->fetchTasks();
+        return $this->taskResource->sortTasks($tasks, $sorting);
     }
 
     /**
