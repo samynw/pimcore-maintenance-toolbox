@@ -1,0 +1,5 @@
+maintenance_toolbox:
+    resource: "@MaintenanceToolboxBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
