@@ -3,6 +3,7 @@
 namespace MaintenanceToolboxBundle\Config;
 
 use Pimcore\Config;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -28,7 +29,7 @@ class ToolboxConfig
             $configFile = Config::locateConfigFile(self::CONFIG_FILENAME);
             $config = Yaml::parseFile($configFile);
             $this->config = $config['maintenancetoolbox'];
-        }catch(ParseException $e){
+        } catch (ParseException $e) {
             // Config file is not found, use empty array as blank config
             $this->config = [];
         }
@@ -57,5 +58,27 @@ class ToolboxConfig
     public static function getConfigFilePath(): string
     {
         return \PIMCORE_CONFIGURATION_DIRECTORY . '/' . self::CONFIG_FILENAME;
+    }
+
+    /**
+     * Return the config as an array
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->config;
+    }
+
+    /**
+     * Write config to file
+     *
+     * @param array $data
+     */
+    public function save(array $data): void
+    {
+        $yaml = Yaml::dump(['maintenancetoolbox' => $data], 5);
+        $fileSystem = new Filesystem();
+        $fileSystem->dumpFile(self::getConfigFilePath(), $yaml);
     }
 }
