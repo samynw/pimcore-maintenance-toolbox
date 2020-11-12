@@ -10,4 +10,9 @@ class MaintenanceToolboxBundle extends AbstractPimcoreBundle
     {
         return $this->container->get(Installer::class);
     }
+
+    public function getAdminIframePath(): string
+    {
+        return '/admin/maintenance-toolbox/config';
+    }
 }
