@@ -2,13 +2,14 @@
 
 namespace MaintenanceToolboxBundle\Command;
 
+use MaintenanceToolboxBundle\Config\ToolboxConfig;
 use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
 use MaintenanceToolboxBundle\Service\LockManipulator;
 use Pimcore\Console\AbstractCommand;
+use Pimcore\Tool;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ReleaseLockCommand extends AbstractCommand
@@ -18,8 +19,8 @@ class ReleaseLockCommand extends AbstractCommand
 
     public function __construct(LockManipulator $lockManipulator)
     {
-        $this->lockManipulator = $lockManipulator;
         parent::__construct();
+        $this->lockManipulator = $lockManipulator;
     }
 
     protected function configure()
@@ -28,7 +29,20 @@ class ReleaseLockCommand extends AbstractCommand
             ->setName('maintenance:release-lock')
             ->setDescription('Release the lock from a maintenance task')
             ->addArgument('task', InputArgument::REQUIRED, 'Name of the task you want to unlock');
+
     }
+
+    /**
+     * This command is only enabled if allowed in the config
+     *
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        $config = new ToolboxConfig();
+        return $config->isFeatureEnabled(ToolboxConfig::FEATURE_RELEASE);
+    }
+
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
