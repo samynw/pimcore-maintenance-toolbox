@@ -35,6 +35,21 @@ class ToolboxConfig
     }
 
     /**
+     * Check the "enabled" setting of a feature in the config
+     *
+     * @param string $feature
+     * @return bool
+     */
+    public function isFeatureEnabled(string $feature): bool
+    {
+        if (\array_key_exists($feature, $this->config)) {
+            return $this->config[$feature]['enabled'];
+        }
+
+        return false;
+    }
+
+    /**
      * Return the location of where the config file is located (or should be located)
      *
      * @return string
