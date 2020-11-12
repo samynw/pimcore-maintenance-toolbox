@@ -2,14 +2,13 @@
 
 namespace MaintenanceToolboxBundle\Command;
 
+use MaintenanceToolboxBundle\Config\ToolboxConfig;
 use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
 use MaintenanceToolboxBundle\Service\LockManipulator;
 use Pimcore\Console\AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ReleaseLockCommand extends AbstractCommand
 {
@@ -18,8 +17,8 @@ class ReleaseLockCommand extends AbstractCommand
 
     public function __construct(LockManipulator $lockManipulator)
     {
-        $this->lockManipulator = $lockManipulator;
         parent::__construct();
+        $this->lockManipulator = $lockManipulator;
     }
 
     protected function configure()
@@ -28,15 +27,27 @@ class ReleaseLockCommand extends AbstractCommand
             ->setName('maintenance:release-lock')
             ->setDescription('Release the lock from a maintenance task')
             ->addArgument('task', InputArgument::REQUIRED, 'Name of the task you want to unlock');
+
     }
+
+    /**
+     * This command is only enabled if allowed in the config
+     *
+     * @return bool
+     */
+    public function isEnabled(): bool
+    {
+        $config = new ToolboxConfig();
+        return $config->isFeatureEnabled(ToolboxConfig::FEATURE_RELEASE);
+    }
+
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $taskToUnlock = $this->input->getArgument('task');
 
-        $io = new SymfonyStyle($input, $output);
-        $io->caution([strtoupper('This might be an unsafe operation.')]);
-        $io->note([
+        $this->io->caution([strtoupper('This might be an unsafe operation.')]);
+        $this->io->note([
             "You've requested to remove the lock from a maintenance job.",
             "In normal circumstances this should never be done manually.",
             "Removing a job lock, might lead to concurring processes and unexpected behaviour.",
@@ -47,22 +58,22 @@ class ReleaseLockCommand extends AbstractCommand
             'Are you sure you want to release the job lock for "%s"? (y/n) ',
             $taskToUnlock
         );
-        if ($io->confirm($question, false)) {
+        if ($this->io->confirm($question, false)) {
             try {
                 $this->lockManipulator->release($taskToUnlock);
-                $io->success(sprintf('Job "%s" has been unlocked', $taskToUnlock));
+                $this->io->success(sprintf('Job "%s" has been unlocked', $taskToUnlock));
             } catch (LockNotFoundInStoreException $e) {
-                $io->error($e->getMessage());
-                $io->writeln([
+                $this->io->error($e->getMessage());
+                $this->io->writeln([
                     'The lock might have been released before running this command.',
                     'Please check the current state.',
                 ]);
-                $io->newLine();
+                $this->io->newLine();
                 return 1;
             }
         } else {
-            $io->writeln('User has aborted the command');
-            $io->newLine();
+            $this->io->writeln('User has aborted the command');
+            $this->io->newLine();
         }
         return 0;
     }

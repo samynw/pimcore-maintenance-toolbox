@@ -23,6 +23,9 @@ services:
     #            - "plain_value"
     #            - "%parameter%"
 
+    MaintenanceToolboxBundle\Installer:
+        public: true
+
     # auto-register all commands as services
     MaintenanceToolboxBundle\Command\:
         resource: '../../Command/*'
@@ -38,3 +41,5 @@ services:
 
     MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter:
         tags: [ 'maintenance_toolbox.store.adapter' ]
+
+    MaintenanceToolboxBundle\Form\EditConfig: ~

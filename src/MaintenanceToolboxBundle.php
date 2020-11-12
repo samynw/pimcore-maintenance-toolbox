@@ -6,10 +6,13 @@ use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
 class MaintenanceToolboxBundle extends AbstractPimcoreBundle
 {
-    public function getJsPaths()
+    public function getInstaller()
     {
-        return [
-            '/bundles/maintenancetoolbox/js/pimcore/startup.js'
-        ];
+        return $this->container->get(Installer::class);
+    }
+
+    public function getAdminIframePath(): string
+    {
+        return '/admin/maintenance-toolbox/config';
     }
 }

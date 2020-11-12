@@ -1,0 +1,4 @@
+pimcore_admin:
+    csrf_protection:
+        excluded_routes:
+            name: 'maintenancetoolbox_config'
