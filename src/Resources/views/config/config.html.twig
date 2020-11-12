@@ -1,0 +1,34 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+    <h2 class="mt-4">Maintenance Toolbox</h2>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <fieldset class="border rounded p-4 mb-4">
+        <legend class="w-auto p-2">Release locks</legend>
+        <p>Do you want to enable the feature to release maintenance locks from the console?</p>
+        <div class="alert alert-danger" role="alert">
+            <strong>Warning</strong>:
+            Please do not enable this feature unless you are sure what you are doing.<br/>
+            This action can have a major impact onto the stability and performance of the entire system,
+            and may cause an overload or complete crash of the server!.
+        </div>
+        <div class="form-group">
+            {{ form_row(form.release__enabled) }}
+        </div>
+    </fieldset>
+
+
+    <fieldset>
+        <div class="form-group">
+            {{ form_widget(form.submit) }}
+        </div>
+    </fieldset>
+    {{ form_end(form, {'render_rest' : false }) }}
+</div>

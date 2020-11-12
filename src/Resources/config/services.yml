@@ -41,3 +41,5 @@ services:
 
     MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter:
         tags: [ 'maintenance_toolbox.store.adapter' ]
+
+    MaintenanceToolboxBundle\Form\EditConfig: ~
