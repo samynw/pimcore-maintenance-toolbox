@@ -9,7 +9,7 @@
     "authors": [
         {
             "name": "Wouter Samyn",
-            "email": "wouter.samyn@studioemma.com"
+            "role": "Developer"
         }
     ],
     "autoload": {
