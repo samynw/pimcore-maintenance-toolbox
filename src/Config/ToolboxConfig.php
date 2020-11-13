@@ -80,5 +80,8 @@ class ToolboxConfig
         $yaml = Yaml::dump(['maintenancetoolbox' => $data], 5);
         $fileSystem = new Filesystem();
         $fileSystem->dumpFile(self::getConfigFilePath(), $yaml);
+
+        // Reload
+        $this->loadConfigFile();
     }
 }
