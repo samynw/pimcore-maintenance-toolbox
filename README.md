@@ -1,9 +1,9 @@
-# pimcore-maintenance-toolbox
+# Pimcore maintenance toolbox
 This provides a set of usefull tools for the Pimcore maintenance
 
-Features include:
-- a console command to get a list of maintenance tasks and whether they are locked or not
-- a console command to manually unlock a maintenance task (for example after getting killed)
+Features include following console commands:
+- [maintenance:list](#task-overview): get a list of maintenance tasks and whether they are locked or not
+- [maintenance:release-lock](#unlock-maintenance-tasks): manually unlock a maintenance task (for example after the process got killed)
 
 ## Installation
 
@@ -27,12 +27,13 @@ The bundle can be configured through the extension manager in the Pimcore admin 
 This command will print a table with all registered maintenance tasks and their locked status.
 If possible also the lock expiration and current duration of the task is shown.
 
-Options:
-- `--locked`: only show the locked tasks
-- `--sort=[name,lock]`: sort the table by name or by lock (default: name)
+#### Options:
+- `--locked`: flag to only show the locked tasks (optional)
+- `--sort` (`-s`): sort the table by either task name or by lock (optional)
+     - supported values: `name`, `lock`
+     - default value: `name`
 
-(note: sample outputs are shorted for readability)
-
+#### Example full list
 ```shell script
 $ php bin/console maintenance:list
 
@@ -51,7 +52,9 @@ $ php bin/console maintenance:list
 | VersionsCleanupStackTraceDb      | ❌      |                     |           |
 +----------------------------------+--------+---------------------+-----------+
 ```
+(note: sample output was shorted for readability)
 
+#### Example list limited to locked tasks
 ```shell script
 $ php bin/console maintenance:list --locked
 
@@ -63,6 +66,7 @@ $ php bin/console maintenance:list --locked
 +------------------+--------+---------------------+-----------+
 ```
 
+#### Example list sorted by duration
 ```shell script
 $ php bin/console maintenance:list --sort=lock
 
@@ -78,6 +82,7 @@ $ php bin/console maintenance:list --sort=lock
 | VersionsCleanupStackTraceDb      | ❌      |                     |           |
 +----------------------------------+--------+---------------------+-----------+
 ```
+(note: sample output was shorted for readability)
 
 ### Unlock maintenance tasks
 
@@ -91,6 +96,8 @@ To prevent reckless unlocking the following are made:
 - feature is disabled by default (enable in module cofiguration)
 - user first gets a warning and has to confirm the action
 
+
+#### Example of manually releasing a job lock
 ```shell script
 $ php bin/console maintenance:release-lock versioncleanup
 
