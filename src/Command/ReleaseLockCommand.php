@@ -27,7 +27,6 @@ class ReleaseLockCommand extends AbstractCommand
             ->setName('maintenance:release-lock')
             ->setDescription('Release the lock from a maintenance task')
             ->addArgument('task', InputArgument::REQUIRED, 'Name of the task you want to unlock');
-
     }
 
     /**

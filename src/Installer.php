@@ -27,8 +27,7 @@ class Installer extends AbstractInstaller
         FileSystem $filesystem,
         FileLocator $fileLocator,
         OutputWriterInterface $outputWriter = null
-    )
-    {
+    ) {
         parent::__construct($outputWriter);
         $this->filesystem = $filesystem;
         $this->fileLocator = $fileLocator;
@@ -89,6 +88,4 @@ class Installer extends AbstractInstaller
     {
         return $this->isInstalled();
     }
-
-
 }

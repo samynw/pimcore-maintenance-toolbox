@@ -46,7 +46,8 @@ class ConfigController extends AdminController
             $config->save($formatter->toNestedArray($data));
         }
 
-        return $this->render('@MaintenanceToolbox/config/config.html.twig',
+        return $this->render(
+            '@MaintenanceToolbox/config/config.html.twig',
             [
                 'config' => $config,
                 'form' => $form->createView(),
