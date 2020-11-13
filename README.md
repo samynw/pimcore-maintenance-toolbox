@@ -18,6 +18,8 @@ php bin/console pimcore:bundle:install MaintenanceToolboxBundle
 ## Configuration
 The bundle can be configured through the extension manager in the Pimcore admin interface.
 
+![Configuration form](docs/img/configuration_form.png)
+
 ## Features
 
 ### Task overview
