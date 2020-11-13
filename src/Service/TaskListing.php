@@ -5,7 +5,7 @@ namespace MaintenanceToolboxBundle\Service;
 use Doctrine\Common\Collections\ArrayCollection;
 use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
 use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
-use MaintenanceToolboxBundle\Model\Task\Status;
+use MaintenanceToolboxBundle\Model\Task\TaskStatus;
 use MaintenanceToolboxBundle\Service\Store\Adapter\AdapterInterface;
 use Pimcore\Maintenance\Executor;
 use Symfony\Component\Lock\Factory as LockFactory;
@@ -57,7 +57,7 @@ class TaskListing
         $tasks = new ArrayCollection();
 
         foreach ($this->maintenanceExecutor->getTaskNames() as $taskName) {
-            $status = Status::fromTask($taskName);
+            $status = TaskStatus::fromTask($taskName);
             // Create dummy lock of 0 seconds
             $lock = $this->lockFactory->createLock($status->getKey(), 0);
             // If the lock cannot be acquired, the job already is locked
@@ -92,7 +92,7 @@ class TaskListing
     public function getLockedTasks(): ArrayCollection
     {
         $tasks = $this->getTasks();
-        return $tasks->filter(function (Status $jobStatus) {
+        return $tasks->filter(function (TaskStatus $jobStatus) {
             return $jobStatus->isLocked();
         });
     }
@@ -130,12 +130,12 @@ class TaskListing
     {
         switch ($sortingOption) {
             case 'name':
-                $compare = static function (Status $a, Status $b) {
+                $compare = static function (TaskStatus $a, TaskStatus $b) {
                     return strcasecmp($a->getTask(), $b->getTask());
                 };
                 break;
             case 'lock':
-                $compare = static function (Status $a, Status $b) {
+                $compare = static function (TaskStatus $a, TaskStatus $b) {
                     // compare $b first so the locked jobs are at the top
                     $compareLock = $b->isLocked() <=> $a->isLocked();
                     if ($compareLock !== 0) {

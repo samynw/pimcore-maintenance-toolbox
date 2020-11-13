@@ -4,7 +4,7 @@ namespace MaintenanceToolboxBundle\Command;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
-use MaintenanceToolboxBundle\Model\Task\Status;
+use MaintenanceToolboxBundle\Model\Task\TaskStatus;
 use MaintenanceToolboxBundle\Service\TaskListing;
 use Pimcore\Console\AbstractCommand;
 use Symfony\Component\Console\Helper\Table;
@@ -93,7 +93,7 @@ class ListCommand extends AbstractCommand
      * - fetch results
      * - sort list
      *
-     * @return ArrayCollection|Status[]
+     * @return ArrayCollection|TaskStatus[]
      * @throws \Exception
      */
     private function getList(): ArrayCollection
@@ -149,7 +149,7 @@ class ListCommand extends AbstractCommand
      * Check if the table should be limited to lock status or show the timestamps as well:
      * - at least one (locked) row should have an expiration date
      *
-     * @param ArrayCollection|Status[] $tasks
+     * @param ArrayCollection|TaskStatus[] $tasks
      * @return bool
      */
     private function shouldShowExpirationColumns(ArrayCollection $tasks): bool

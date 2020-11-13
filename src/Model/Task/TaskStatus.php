@@ -5,7 +5,7 @@ namespace MaintenanceToolboxBundle\Model\Task;
 use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
 use Symfony\Component\Lock\Key;
 
-class Status
+class TaskStatus
 {
     /** @var string */
     private $task;
@@ -78,7 +78,7 @@ class Status
 
     /**
      * @param bool $locked
-     * @return Status
+     * @return TaskStatus
      */
     public function setLocked(bool $locked): self
     {
@@ -88,7 +88,7 @@ class Status
 
     /**
      * @param \DateTimeImmutable $expirationDate
-     * @return Status
+     * @return TaskStatus
      */
     public function setExpirationDate(\DateTimeImmutable $expirationDate): self
     {
