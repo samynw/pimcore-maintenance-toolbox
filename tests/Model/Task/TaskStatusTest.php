@@ -28,8 +28,9 @@ class TaskStatusTest extends TestCase
     {
         $status = TaskStatus::fromTask('dummy');
         $expiration = new \DateTimeImmutable('+1 hours ');
-        $status->setExpirationDate($expiration);
+        $res = $status->setExpirationDate($expiration);
 
+        self::assertInstanceOf(TaskStatus::class, $res); // fluent setter
         self::assertEquals($expiration, $status->getExpirationDate());
     }
 
@@ -60,7 +61,8 @@ class TaskStatusTest extends TestCase
     {
         $status = TaskStatus::fromTask('dummy');
         self::assertFalse($status->isLocked());
-        $status->setLocked(true);
+        $res = $status->setLocked(true);
+        self::assertInstanceOf(TaskStatus::class, $res); // fluent setter
         self::assertTrue($status->isLocked());
     }
 
