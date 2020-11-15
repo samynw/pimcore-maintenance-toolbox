@@ -5,6 +5,7 @@ namespace MaintenanceToolboxBundle\Tests\Model\Task;
 use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
 use MaintenanceToolboxBundle\Model\Task\TaskStatus;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Lock\Key;
 
 class TaskStatusTest extends TestCase
 {
@@ -55,4 +56,18 @@ class TaskStatusTest extends TestCase
         self::assertMatchesRegularExpression('/[\d]{2}h[\d]{2}m[\d]{2}s/', $status->getDurationString());
     }
 
+    public function testCanBeLocked()
+    {
+        $status = TaskStatus::fromTask('dummy');
+        self::assertFalse($status->isLocked());
+        $status->setLocked(true);
+        self::assertTrue($status->isLocked());
+    }
+
+    public function testCanGenerateKey()
+    {
+        $status = TaskStatus::fromTask('dummy');
+        self::assertInstanceOf(Key::class, $status->getKey());
+        self::assertStringContainsString($status->getTask(), (string)$status->getKey());
+    }
 }
