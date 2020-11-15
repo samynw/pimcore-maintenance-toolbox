@@ -2,12 +2,11 @@
 
 namespace MaintenanceToolboxBundle\Controller;
 
-use MaintenanceToolboxBundle\Form\EditConfigBuilder;
-use MaintenanceToolboxBundle\Form\EditConfigType;
 use MaintenanceToolboxBundle\Service\FormBuilder\EditConfig;
 use MaintenanceToolboxBundle\Tool\ArrayFormatter;
 use MaintenanceToolboxBundle\Config\ToolboxConfig;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +50,7 @@ class ConfigController extends AdminController
             $this->formService->getFormClassName(),
             $this->formService->getDefaultValues(),
             $this->formService->getDefaultOptions()
-        );
+        )->add('submit', SubmitType::class, ['label' => 'Save config']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

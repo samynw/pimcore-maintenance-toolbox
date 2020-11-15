@@ -4,10 +4,9 @@ namespace MaintenanceToolboxBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class EditConfigType extends AbstractType
+class ConfigType extends AbstractType
 {
     /**
      * Build the edit configuration form
@@ -24,10 +23,5 @@ class EditConfigType extends AbstractType
             CheckboxType::class,
             ['required' => false, 'label' => 'Enable feature']
         );
-        $builder->add('submit', SubmitType::class);
-
-        // Add button in the template, not the form
-
-        return $builder->getForm();
     }
 }

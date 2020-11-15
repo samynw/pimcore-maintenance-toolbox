@@ -3,7 +3,7 @@
 namespace MaintenanceToolboxBundle\Service\FormBuilder;
 
 use MaintenanceToolboxBundle\Config\ToolboxConfig;
-use MaintenanceToolboxBundle\Form\EditConfigType;
+use MaintenanceToolboxBundle\Form\ConfigType;
 use MaintenanceToolboxBundle\Tool\ArrayFormatter;
 
 class EditConfig
@@ -15,7 +15,7 @@ class EditConfig
      */
     public function getFormClassName(): string
     {
-        return EditConfigType::class;
+        return ConfigType::class;
     }
 
     /**

@@ -27,7 +27,7 @@
 
     <fieldset>
         <div class="form-group">
-            <button type="submit" name="edit_config[submit]" class="btn-primary btn">Save config</button>
+            {{ form_row(form.submit) }}
         </div>
     </fieldset>
     {{ form_end(form, {'render_rest' : false }) }}
