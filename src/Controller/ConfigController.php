@@ -2,27 +2,37 @@
 
 namespace MaintenanceToolboxBundle\Controller;
 
-use MaintenanceToolboxBundle\Form\EditConfig;
+use MaintenanceToolboxBundle\Form\EditConfigBuilder;
+use MaintenanceToolboxBundle\Form\EditConfigType;
+use MaintenanceToolboxBundle\Service\FormBuilder\EditConfig;
 use MaintenanceToolboxBundle\Tool\ArrayFormatter;
 use MaintenanceToolboxBundle\Config\ToolboxConfig;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ConfigController extends AdminController
 {
+    /** @var FormFactoryInterface */
+    private $formFactory;
     /** @var EditConfig */
-    private $editForm;
+    private $formService;
 
     /**
      * ConfigController constructor.
      *
+     * @param FormFactoryInterface $formFactory
      * @param EditConfig $formService
      */
-    public function __construct(EditConfig $formService)
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        EditConfig $formService
+    )
     {
-        $this->editForm = $formService;
+        $this->formFactory = $formFactory;
+        $this->formService = $formService;
     }
 
     /**
@@ -37,7 +47,11 @@ class ConfigController extends AdminController
     {
         $config = new ToolboxConfig();
 
-        $form = $this->editForm->buildForm();
+        $form = $this->formFactory->create(
+            $this->formService->getFormClassName(),
+            $this->formService->getDefaultValues(),
+            $this->formService->getDefaultOptions()
+        );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
