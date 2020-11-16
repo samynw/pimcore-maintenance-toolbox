@@ -7,6 +7,7 @@ use MaintenanceToolboxBundle\Model\Task\TaskStatus;
 use MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter;
 use MaintenanceToolboxBundle\Service\TaskListing;
 use PHPUnit\Framework\TestCase;
+use Pimcore\Db\Connection;
 use Pimcore\Maintenance\Executor;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Lock\Factory;
@@ -29,7 +30,7 @@ class TaskListingTest extends TestCase
             $executor,
             $lockMock,
             $this->createMock(PdoStore::class),
-            [new PdoAdapter()]
+            [new PdoAdapter($this->createMock(Connection::class))]
         );
     }
 
@@ -46,8 +47,6 @@ class TaskListingTest extends TestCase
     {
         // This doesn't test the contents itself
         self::assertInstanceOf(ArrayCollection::class, $this->listing->getTasks());
-
-
         self::assertInstanceOf(ArrayCollection::class, $this->listing->getLockedTasks());
     }
 

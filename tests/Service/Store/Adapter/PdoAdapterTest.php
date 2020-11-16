@@ -3,6 +3,7 @@
 namespace MaintenanceToolboxBundle\Service\Store\Adapter;
 
 use PHPUnit\Framework\TestCase;
+use Pimcore\Db\Connection;
 use Symfony\Component\Lock\Key;
 use Symfony\Component\Lock\Store\PdoStore;
 
@@ -15,7 +16,7 @@ class PdoAdapterTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->adapter = new PdoAdapter();
+        $this->adapter = new PdoAdapter($this->createMock(Connection::class));
         $this->key = new Key('dummykey');
     }
 
@@ -26,7 +27,7 @@ class PdoAdapterTest extends TestCase
 
     public function testKeyCanBeGenerated()
     {
-        // Use refeflection to test private method until the integration tests are up and running
+        // Use reflection to test private method until the integration tests are up and running
         $reflection = new \ReflectionClass(get_class($this->adapter));
         $method = $reflection->getMethod('generateKeyId');
         $method->setAccessible(true);
