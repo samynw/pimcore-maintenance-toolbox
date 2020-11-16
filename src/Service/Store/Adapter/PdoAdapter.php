@@ -9,6 +9,18 @@ use Symfony\Component\Lock\Store\PdoStore;
 
 class PdoAdapter implements AdapterInterface
 {
+    /** @var Db\Connection */
+    private $connection;
+
+    /**
+     * PdoAdapter constructor.
+     * @param Db\Connection $connection
+     */
+    public function __construct(Db\Connection $connection)
+    {
+        $this->connection = $connection;
+    }
+
     /**
      * Use this adapter for the persistent PDO store
      *
@@ -31,7 +43,7 @@ class PdoAdapter implements AdapterInterface
         // Build query
         $sql = "SELECT * FROM lock_keys WHERE key_id = :id";
 
-        $stmt = Db::getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(':id', $this->generateKeyId($key));
         $stmt->execute();
 
@@ -68,7 +80,7 @@ class PdoAdapter implements AdapterInterface
         // Build query
         $sql = "DELETE FROM lock_keys WHERE key_id = :id";
 
-        $stmt = Db::getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(':id', $this->generateKeyId($key));
         $stmt->execute();
 
