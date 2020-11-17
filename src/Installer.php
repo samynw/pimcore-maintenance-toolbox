@@ -2,14 +2,18 @@
 
 namespace MaintenanceToolboxBundle;
 
+use Doctrine\DBAL\Migrations\Version;
+use Doctrine\DBAL\Schema\Schema;
 use MaintenanceToolboxBundle\Config\ToolboxConfig;
-use Pimcore\Extension\Bundle\Installer\AbstractInstaller;
+use Pimcore\Db\ConnectionInterface;
 use Pimcore\Extension\Bundle\Installer\Exception\InstallationException;
-use Pimcore\Extension\Bundle\Installer\OutputWriterInterface;
+use Pimcore\Extension\Bundle\Installer\MigrationInstaller;
+use Pimcore\Migrations\MigrationManager;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Installer extends AbstractInstaller
+class Installer extends MigrationInstaller
 {
     /** @var Filesystem */
     private $filesystem;
@@ -18,25 +22,31 @@ class Installer extends AbstractInstaller
 
     /**
      * Installer constructor.
-     *
+     * @param BundleInterface $bundle
+     * @param ConnectionInterface $connection
+     * @param MigrationManager $migrationManager
      * @param Filesystem $filesystem
      * @param FileLocator $fileLocator
-     * @param OutputWriterInterface|null $outputWriter
      */
     public function __construct(
+        BundleInterface $bundle,
+        ConnectionInterface $connection,
+        MigrationManager $migrationManager,
         FileSystem $filesystem,
-        FileLocator $fileLocator,
-        OutputWriterInterface $outputWriter = null
+        FileLocator $fileLocator
     ) {
-        parent::__construct($outputWriter);
+        parent::__construct($bundle, $connection, $migrationManager);
         $this->filesystem = $filesystem;
         $this->fileLocator = $fileLocator;
     }
 
     /**
      * Install the bundle by creating the config file
+     *
+     * @param Schema $schema
+     * @param Version $version
      */
-    public function install(): void
+    public function migrateInstall(Schema $schema, Version $version): void
     {
         $source = $this->fileLocator->locate(
             '@MaintenanceToolboxBundle/Resources/data/' . ToolboxConfig::CONFIG_FILENAME . '.example'
@@ -53,8 +63,11 @@ class Installer extends AbstractInstaller
 
     /**
      * Remove the config file to uninstall the bundle
+     *
+     * @param Schema $schema
+     * @param Version $version
      */
-    public function uninstall(): void
+    public function migrateUninstall(Schema $schema, Version $version): void
     {
         $this->filesystem->remove(ToolboxConfig::getConfigFilePath());
     }
@@ -67,25 +80,5 @@ class Installer extends AbstractInstaller
     public function isInstalled(): bool
     {
         return \file_exists(ToolboxConfig::getConfigFilePath());
-    }
-
-    /**
-     * Bundle can be installed if it isn't installed yet
-     *
-     * @return bool
-     */
-    public function canBeInstalled(): bool
-    {
-        return !$this->isInstalled();
-    }
-
-    /**
-     * Bundle can be uninstalled if it's installed
-     *
-     * @return bool
-     */
-    public function canBeUninstalled(): bool
-    {
-        return $this->isInstalled();
     }
 }
