@@ -2,6 +2,7 @@
 
 namespace MaintenanceToolboxBundle\Tests\Service\FormBuilder;
 
+use MaintenanceToolboxBundle\Config\ToolboxConfig;
 use MaintenanceToolboxBundle\Form\ConfigType;
 use MaintenanceToolboxBundle\Service\FormBuilder\EditConfig;
 use PHPUnit\Framework\TestCase;
@@ -13,7 +14,13 @@ class EditConfigTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->service = new EditConfig();
+        $config = $this->createMock(ToolboxConfig::class);
+        $config->method('toArray')->willReturn([
+            'release' => [
+                'enabled' => true,
+            ]
+        ]);
+        $this->service = new EditConfig($config);
     }
 
     public function testReturnsFormClass()
