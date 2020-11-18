@@ -29,7 +29,7 @@ class TaskListingTest extends TestCase
         $this->listing = new TaskListing(
             $executor,
             $lockMock,
-            $this->createMock(PdoStore::class),
+            new PdoStore($this->createMock(Connection::class)),
             [new PdoAdapter($this->createMock(Connection::class))]
         );
     }
