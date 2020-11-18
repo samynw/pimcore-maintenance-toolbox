@@ -14,11 +14,14 @@ class ReleaseLockCommand extends AbstractCommand
 {
     /** @var LockManipulator */
     private $lockManipulator;
+    /** @var ToolboxConfig */
+    private $config;
 
-    public function __construct(LockManipulator $lockManipulator)
+    public function __construct(LockManipulator $lockManipulator, ToolboxConfig $config)
     {
         parent::__construct();
         $this->lockManipulator = $lockManipulator;
+        $this->config = $config;
     }
 
     protected function configure()
@@ -36,8 +39,7 @@ class ReleaseLockCommand extends AbstractCommand
      */
     public function isEnabled(): bool
     {
-        $config = new ToolboxConfig();
-        return $config->isFeatureEnabled(ToolboxConfig::FEATURE_RELEASE);
+        return $this->config->isFeatureEnabled($this->config::FEATURE_RELEASE);
     }
 
 
