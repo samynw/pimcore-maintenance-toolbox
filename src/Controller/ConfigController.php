@@ -18,20 +18,25 @@ class ConfigController extends AdminController
     private $formFactory;
     /** @var EditConfig */
     private $formService;
+    /** @var ToolboxConfig */
+    private $config;
 
     /**
      * ConfigController constructor.
      *
      * @param FormFactoryInterface $formFactory
      * @param EditConfig $formService
+     * @param ToolboxConfig $config
      */
     public function __construct(
         FormFactoryInterface $formFactory,
-        EditConfig $formService
+        EditConfig $formService,
+        ToolboxConfig $config
     )
     {
         $this->formFactory = $formFactory;
         $this->formService = $formService;
+        $this->config = $config;
     }
 
     /**
@@ -44,7 +49,7 @@ class ConfigController extends AdminController
      */
     public function configAction(Request $request): Response
     {
-        $config = new ToolboxConfig();
+        $this->config = new ToolboxConfig();
 
         $form = $this->formFactory->create(
             $this->formService->getFormClassName(),
@@ -56,13 +61,13 @@ class ConfigController extends AdminController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $formatter = new ArrayFormatter();
-            $config->save($formatter->toNestedArray($data));
+            $this->config->save($formatter->toNestedArray($data));
         }
 
         return $this->render(
             '@MaintenanceToolbox/config/config.html.twig',
             [
-                'config' => $config,
+                'config' => $this->config,
                 'form' => $form->createView(),
             ]
         );
