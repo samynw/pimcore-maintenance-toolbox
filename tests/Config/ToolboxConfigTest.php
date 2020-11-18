@@ -59,6 +59,18 @@ class ToolboxConfigTest extends MockeryTestCase
         self::assertEmpty($notFoundConfig->toArray());
     }
 
+    public function testFallsBackToEmptyConfigIfFileEmpty()
+    {
+        \Mockery::close();// teardown the setup() because we'll use an other file parsing mock for this test
+        $yamlMock = \Mockery::mock('overload:' . Yaml::class);
+        $yamlMock->expects()->once()->shouldReceive('parseFile')
+            ->andReturn([]);
+
+        $notFoundConfig = new ToolboxConfig('dummyPath');
+        self::assertIsArray($notFoundConfig->toArray());
+        self::assertEmpty($notFoundConfig->toArray());
+    }
+
     public function testCanCheckFeatureFlags()
     {
         // don't check true or false, just return type

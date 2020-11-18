@@ -30,7 +30,12 @@ class ToolboxConfig
             if ($configFile === null) {
                 $configFile = Config::locateConfigFile(self::CONFIG_FILENAME);
             }
+
             $config = Yaml::parseFile($configFile);
+            if (!\is_array($config) || !\array_key_exists('maintenancetoolbox', $config)) {
+                throw new ParseException(sprintf('The config file %s was empty', $configFile));
+            }
+
             $this->config = $config['maintenancetoolbox'];
         } catch (ParseException $e) {
             // Config file is not found, use empty array as blank config
