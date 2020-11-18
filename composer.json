@@ -13,8 +13,13 @@
         }
     ],
     "autoload": {
+      "psr-4": {
+        "MaintenanceToolboxBundle\\": "src/"
+      }
+    },
+    "autoload-dev": {
         "psr-4": {
-            "MaintenanceToolboxBundle\\": "src/"
+            "MaintenanceToolboxBundle\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -24,5 +29,10 @@
             ]
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require-dev": {
+        "symfony/phpunit-bridge": "5.x-dev",
+        "phpunit/phpunit": "^9.5@dev",
+        "mockery/mockery": "^1.4@dev"
+    }
 }

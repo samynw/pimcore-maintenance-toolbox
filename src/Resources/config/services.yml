@@ -34,6 +34,8 @@ services:
         resource: '../../Command/*'
         tags: ['console.command']
 
+    MaintenanceToolboxBundle\Config\ToolboxConfig: ~
+
     MaintenanceToolboxBundle\Service\TaskListing:
         arguments:
             $storeAdapters: !tagged_iterator maintenance_toolbox.store.adapter

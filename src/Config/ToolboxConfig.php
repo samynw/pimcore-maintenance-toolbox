@@ -15,19 +15,27 @@ class ToolboxConfig
     /** @var array */
     private $config;
 
-    public function __construct()
+    public function __construct(string $configPath = null)
     {
-        $this->loadConfigFile();
+        $this->loadConfigFile($configPath);
     }
 
     /**
      * Parse the config file for this bundle
+     * @param string|null $configFile
      */
-    private function loadConfigFile(): void
+    private function loadConfigFile(string $configFile = null): void
     {
         try {
-            $configFile = Config::locateConfigFile(self::CONFIG_FILENAME);
+            if ($configFile === null) {
+                $configFile = Config::locateConfigFile(self::CONFIG_FILENAME);
+            }
+
             $config = Yaml::parseFile($configFile);
+            if (!\is_array($config) || !\array_key_exists('maintenancetoolbox', $config)) {
+                throw new ParseException(sprintf('The config file %s was empty', $configFile));
+            }
+
             $this->config = $config['maintenancetoolbox'];
         } catch (ParseException $e) {
             // Config file is not found, use empty array as blank config
