@@ -6,6 +6,7 @@ use MaintenanceToolboxBundle\Config\ToolboxConfig;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\Mock;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -30,6 +31,10 @@ class ToolboxConfigTest extends MockeryTestCase
             ]
         ]);
         $yamlMock->expects()->once()->shouldReceive('dump')->andReturn();
+
+        // Don't actually write file during test
+        $fileSystemMock = \Mockery::mock('overload:' . Filesystem::class);
+        $fileSystemMock->shouldReceive('dumpFile')->andReturn();
 
         $this->config = new ToolboxConfig();
     }
