@@ -8,6 +8,18 @@ use MaintenanceToolboxBundle\Tool\ArrayFormatter;
 
 class EditConfig
 {
+    /** @var ToolboxConfig */
+    private $config;
+
+    /**
+     * EditConfig constructor.
+     * @param ToolboxConfig $config
+     */
+    public function __construct(ToolboxConfig $config)
+    {
+        $this->config = $config;
+    }
+
     /**
      * Return FQCN of the form to build
      *
@@ -37,8 +49,7 @@ class EditConfig
      */
     public function getDefaultValues(): array
     {
-        $currentConfig = new ToolboxConfig();
         $formatter = new ArrayFormatter();
-        return $formatter->toFlatArray($currentConfig->toArray());
+        return $formatter->toFlatArray($this->config->toArray());
     }
 }
