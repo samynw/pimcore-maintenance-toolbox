@@ -14,6 +14,7 @@ class Configuration implements ConfigurationInterface
 {
     /**
      * {@inheritdoc}
+     * @codeCoverageIgnore
      */
     public function getConfigTreeBuilder()
     {
