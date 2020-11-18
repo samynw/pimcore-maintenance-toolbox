@@ -32,6 +32,7 @@
     "minimum-stability": "dev",
     "require-dev": {
         "symfony/phpunit-bridge": "5.x-dev",
-        "phpunit/phpunit": "^9.5@dev"
+        "phpunit/phpunit": "^9.5@dev",
+        "mockery/mockery": "^1.4@dev"
     }
 }
