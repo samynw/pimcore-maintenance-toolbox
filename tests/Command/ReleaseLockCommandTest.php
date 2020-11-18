@@ -3,26 +3,31 @@
 namespace MaintenanceToolboxBundle\Tests\Command;
 
 use MaintenanceToolboxBundle\Command\ReleaseLockCommand;
+use MaintenanceToolboxBundle\Config\ToolboxConfig;
 use MaintenanceToolboxBundle\Service\LockManipulator;
 use PHPUnit\Framework\TestCase;
 
 class ReleaseLockCommandTest extends TestCase
 {
-
-    protected function setUp(): void
-    {
-        if (!defined('PIMCORE_CONFIGURATION_DIRECTORY')) {
-            define('PIMCORE_CONFIGURATION_DIRECTORY', __DIR__ . '/../../../../../var/config');
-        }
-        if (!defined('PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY')) {
-            define('PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY', __DIR__ . '/../../../../../app/config/pimcore');
-        }
-    }
-
-    public function testCanGetFeatureFlag()
+    public function testCanBeHidden()
     {
         $lockManipulator = $this->createMock(LockManipulator::class);
-        $command = new ReleaseLockCommand($lockManipulator);
-        self::assertIsBool($command->isEnabled());
+
+        $config = $this->createMock(ToolboxConfig::class);
+        $config->method('isFeatureEnabled')->willReturn(false);
+
+        $command = new ReleaseLockCommand($lockManipulator, $config);
+        self::assertFalse($command->isEnabled());
+    }
+
+    public function testCanBeActive()
+    {
+        $lockManipulator = $this->createMock(LockManipulator::class);
+
+        $config = $this->createMock(ToolboxConfig::class);
+        $config->method('isFeatureEnabled')->willReturn(true);
+
+        $command = new ReleaseLockCommand($lockManipulator, $config);
+        self::assertTrue($command->isEnabled());
     }
 }
