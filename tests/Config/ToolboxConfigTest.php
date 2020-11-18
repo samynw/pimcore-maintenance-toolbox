@@ -3,21 +3,33 @@
 namespace MaintenanceToolboxBundle\Tests\Config;
 
 use MaintenanceToolboxBundle\Config\ToolboxConfig;
+use Mockery\Adapter\Phpunit\MockeryTestCase;
+use Mockery\Mock;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
-class ToolboxConfigTest extends TestCase
+/**
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
+class ToolboxConfigTest extends MockeryTestCase
 {
     /** @var ToolboxConfig */
     private $config;
 
     protected function setUp(): void
     {
-        if (!defined('PIMCORE_CONFIGURATION_DIRECTORY')) {
-            define('PIMCORE_CONFIGURATION_DIRECTORY', __DIR__ . '/../../../../../var/config');
-        }
-        if (!defined('PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY')) {
-            define('PIMCORE_CUSTOM_CONFIGURATION_DIRECTORY', __DIR__ . '/../../../../../app/config/pimcore');
-        }
+        // Must use Mockery because class methods are called statically
+        $yamlMock = \Mockery::mock('overload:' . Yaml::class);
+        $yamlMock->expects()->once()->shouldReceive('parseFile')->andReturn([
+            'maintenancetoolbox' => [
+                'release' => [
+                    'enabled' => true,
+                ],
+            ]
+        ]);
+        $yamlMock->expects()->once()->shouldReceive('dump')->andReturn();
 
         $this->config = new ToolboxConfig();
     }
@@ -35,8 +47,13 @@ class ToolboxConfigTest extends TestCase
         self::assertGreaterThan(0, count($data));
     }
 
-    public function testFallsBacktoEmptyConfig()
+    public function testFallsBackToEmptyConfig()
     {
+        \Mockery::close();// teardown the setup() because we'll use an other file parsing mock for this test
+        $yamlMock = \Mockery::mock('overload:' . Yaml::class);
+        $yamlMock->expects()->once()->shouldReceive('parseFile')
+            ->andThrow(new ParseException('For testing'));
+
         $notFoundConfig = new ToolboxConfig('dummyPath');
         self::assertIsArray($notFoundConfig->toArray());
         self::assertEmpty($notFoundConfig->toArray());
@@ -52,18 +69,12 @@ class ToolboxConfigTest extends TestCase
 
     public function testCanConfigBeStored()
     {
-        $origData = $this->config->toArray();
         $testData = $this->config->toArray();
-        // Set the enabled state of a feature and check if the feature check matches
+        // Set the enabled state of a feature
         $testData[ToolboxConfig::FEATURE_RELEASE]['enabled'] = false;
-        $this->config->save($testData);
-        self::assertEquals(false, $this->config->isFeatureEnabled(ToolboxConfig::FEATURE_RELEASE));
-        // Set new value to check if the update has worked
-        $testData[ToolboxConfig::FEATURE_RELEASE]['enabled'] = true;
-        $this->config->save($testData);
-        self::assertEquals(true, $this->config->isFeatureEnabled(ToolboxConfig::FEATURE_RELEASE));
 
-        $this->config->save($origData);
-        self::assertEquals($origData, $this->config->toArray());
+        // Method returns void, so assert null
+        self::assertNull($this->config->save($testData));
+        // Only tests unit, no integration (so not if value got stored)
     }
 }
