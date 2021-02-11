@@ -9,6 +9,16 @@ class MaintenanceToolboxBundle extends AbstractPimcoreBundle
 {
     use PackageVersionTrait;
 
+    /**
+     * The human readable name of the bundle
+     *
+     * @return string
+     */
+    public function getNiceName()
+    {
+        return 'Maintenance Toolbox';
+    }
+
     public function getInstaller()
     {
         return $this->container->get(Installer::class);
