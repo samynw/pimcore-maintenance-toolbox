@@ -14,18 +14,18 @@
     ],
     "autoload": {
       "psr-4": {
-        "MaintenanceToolboxBundle\\": "src/"
+        "Samynw\\MaintenanceToolboxBundle\\": "src/"
       }
     },
     "autoload-dev": {
         "psr-4": {
-            "MaintenanceToolboxBundle\\Tests\\": "tests/"
+            "Samynw\\MaintenanceToolboxBundle\\Tests\\": "tests/"
         }
     },
     "extra": {
         "pimcore": {
             "bundles": [
-                "MaintenanceToolboxBundle\\MaintenanceToolboxBundle"
+                "Samynw\\MaintenanceToolboxBundle\\MaintenanceToolboxBundle"
             ]
         }
     },

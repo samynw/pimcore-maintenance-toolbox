@@ -1,11 +1,11 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Service;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use MaintenanceToolboxBundle\Model\Task\TaskStatus;
-use MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter;
-use MaintenanceToolboxBundle\Service\TaskListing;
+use Samynw\MaintenanceToolboxBundle\Model\Task\TaskStatus;
+use Samynw\MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter;
+use Samynw\MaintenanceToolboxBundle\Service\TaskListing;
 use PHPUnit\Framework\TestCase;
 use Pimcore\Db\Connection;
 use Pimcore\Maintenance\Executor;

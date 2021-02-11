@@ -1,8 +1,8 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Tool;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Tool;
 
-use MaintenanceToolboxBundle\Tool\ArrayFormatter;
+use Samynw\MaintenanceToolboxBundle\Tool\ArrayFormatter;
 use PHPUnit\Framework\TestCase;
 
 class ArrayFormatterTest extends TestCase

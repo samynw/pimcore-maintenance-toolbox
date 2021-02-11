@@ -1,10 +1,10 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Service\FormBuilder;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Service\FormBuilder;
 
-use MaintenanceToolboxBundle\Config\ToolboxConfig;
-use MaintenanceToolboxBundle\Form\ConfigType;
-use MaintenanceToolboxBundle\Service\FormBuilder\EditConfig;
+use Samynw\MaintenanceToolboxBundle\Config\ToolboxConfig;
+use Samynw\MaintenanceToolboxBundle\Form\ConfigType;
+use Samynw\MaintenanceToolboxBundle\Service\FormBuilder\EditConfig;
 use PHPUnit\Framework\TestCase;
 
 class EditConfigTest extends TestCase

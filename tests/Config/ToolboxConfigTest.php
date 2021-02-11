@@ -1,8 +1,8 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Config;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Config;
 
-use MaintenanceToolboxBundle\Config\ToolboxConfig;
+use Samynw\MaintenanceToolboxBundle\Config\ToolboxConfig;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 use Mockery\Mock;
 use PHPUnit\Framework\TestCase;

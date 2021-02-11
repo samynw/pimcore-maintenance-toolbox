@@ -1,11 +1,11 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Command;
+namespace Samynw\MaintenanceToolboxBundle\Command;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
-use MaintenanceToolboxBundle\Model\Task\TaskStatus;
-use MaintenanceToolboxBundle\Service\TaskListing;
+use Samynw\MaintenanceToolboxBundle\Exception\EmptyPropertyException;
+use Samynw\MaintenanceToolboxBundle\Model\Task\TaskStatus;
+use Samynw\MaintenanceToolboxBundle\Service\TaskListing;
 use Pimcore\Console\AbstractCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;

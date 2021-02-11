@@ -1,10 +1,10 @@
 <?php
 
-namespace MaintenanceToolboxBundle;
+namespace Samynw\MaintenanceToolboxBundle;
 
 use Doctrine\DBAL\Migrations\Version;
 use Doctrine\DBAL\Schema\Schema;
-use MaintenanceToolboxBundle\Config\ToolboxConfig;
+use Samynw\MaintenanceToolboxBundle\Config\ToolboxConfig;
 use Pimcore\Db\ConnectionInterface;
 use Pimcore\Extension\Bundle\Installer\Exception\InstallationException;
 use Pimcore\Extension\Bundle\Installer\MigrationInstaller;

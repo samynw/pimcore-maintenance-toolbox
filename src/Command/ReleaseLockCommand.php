@@ -1,10 +1,10 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Command;
+namespace Samynw\MaintenanceToolboxBundle\Command;
 
-use MaintenanceToolboxBundle\Config\ToolboxConfig;
-use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
-use MaintenanceToolboxBundle\Service\LockManipulator;
+use Samynw\MaintenanceToolboxBundle\Config\ToolboxConfig;
+use Samynw\MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
+use Samynw\MaintenanceToolboxBundle\Service\LockManipulator;
 use Pimcore\Console\AbstractCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

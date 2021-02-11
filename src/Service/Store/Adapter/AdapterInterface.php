@@ -1,6 +1,6 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Service\Store\Adapter;
+namespace Samynw\MaintenanceToolboxBundle\Service\Store\Adapter;
 
 use Symfony\Component\Lock\Key;
 

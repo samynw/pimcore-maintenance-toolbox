@@ -1,10 +1,10 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Controller;
+namespace Samynw\MaintenanceToolboxBundle\Controller;
 
-use MaintenanceToolboxBundle\Service\FormBuilder\EditConfig;
-use MaintenanceToolboxBundle\Tool\ArrayFormatter;
-use MaintenanceToolboxBundle\Config\ToolboxConfig;
+use Samynw\MaintenanceToolboxBundle\Service\FormBuilder\EditConfig;
+use Samynw\MaintenanceToolboxBundle\Tool\ArrayFormatter;
+use Samynw\MaintenanceToolboxBundle\Config\ToolboxConfig;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactoryInterface;

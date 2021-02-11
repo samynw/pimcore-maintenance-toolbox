@@ -1,6 +1,6 @@
 <?php
 
-namespace MaintenanceToolboxBundle;
+namespace Samynw\MaintenanceToolboxBundle;
 
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;

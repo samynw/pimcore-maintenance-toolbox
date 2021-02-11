@@ -1,10 +1,10 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Service\FormBuilder;
+namespace Samynw\MaintenanceToolboxBundle\Service\FormBuilder;
 
-use MaintenanceToolboxBundle\Config\ToolboxConfig;
-use MaintenanceToolboxBundle\Form\ConfigType;
-use MaintenanceToolboxBundle\Tool\ArrayFormatter;
+use Samynw\MaintenanceToolboxBundle\Config\ToolboxConfig;
+use Samynw\MaintenanceToolboxBundle\Form\ConfigType;
+use Samynw\MaintenanceToolboxBundle\Tool\ArrayFormatter;
 
 class EditConfig
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests;
+namespace Samynw\MaintenanceToolboxBundle\Tests;
 
-use MaintenanceToolboxBundle\MaintenanceToolboxBundle;
+use Samynw\MaintenanceToolboxBundle\MaintenanceToolboxBundle;
 use Pimcore\Test\KernelTestCase;
 
 class MaintenanceToolboxBundleTest extends KernelTestCase

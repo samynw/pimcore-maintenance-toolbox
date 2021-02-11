@@ -1,6 +1,6 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tool;
+namespace Samynw\MaintenanceToolboxBundle\Tool;
 
 class ArrayFormatter
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Exception;
+namespace Samynw\MaintenanceToolboxBundle\Exception;
 
 class EmptyPropertyException extends \RuntimeException
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Service;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Service;
 
-use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
-use MaintenanceToolboxBundle\Service\LockManipulator;
-use MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter;
+use Samynw\MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
+use Samynw\MaintenanceToolboxBundle\Service\LockManipulator;
+use Samynw\MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter;
 use PHPUnit\Framework\TestCase;
 use Pimcore\Db\Connection;
 use Pimcore\Log\ApplicationLogger;

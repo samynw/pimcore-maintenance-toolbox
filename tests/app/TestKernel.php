@@ -1,8 +1,8 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\app;
+namespace Samynw\MaintenanceToolboxBundle\Tests\app;
 
-use MaintenanceToolboxBundle\MaintenanceToolboxBundle;
+use Samynw\MaintenanceToolboxBundle\MaintenanceToolboxBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 

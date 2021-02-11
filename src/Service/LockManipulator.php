@@ -1,9 +1,9 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Service;
+namespace Samynw\MaintenanceToolboxBundle\Service;
 
-use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
-use MaintenanceToolboxBundle\Service\Store\Adapter\AdapterInterface;
+use Samynw\MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
+use Samynw\MaintenanceToolboxBundle\Service\Store\Adapter\AdapterInterface;
 use Pimcore\Log\ApplicationLogger;
 use Symfony\Component\Lock\Key;
 use Symfony\Component\Lock\PersistingStoreInterface;
