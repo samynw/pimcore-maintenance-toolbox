@@ -11,40 +11,40 @@ services:
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
-    MaintenanceToolboxBundle\Controller\:
+    Samynw\MaintenanceToolboxBundle\Controller\:
         resource: '../../Controller'
         public: true
         tags: [ 'controller.service_arguments' ]
 
     # add more services, or override services that need manual wiring
-    #    MaintenanceToolboxBundle\ExampleClass:
+    #    Samynw\MaintenanceToolboxBundle\ExampleClass:
     #        arguments:
     #            - "@service_id"
     #            - "plain_value"
     #            - "%parameter%"
 
-    MaintenanceToolboxBundle\Installer:
+    Samynw\MaintenanceToolboxBundle\Installer:
         public: true
         arguments:
             # fetch the bundle via expression language
             $bundle: "@=service('kernel').getBundle('MaintenanceToolboxBundle')"
 
     # auto-register all commands as services
-    MaintenanceToolboxBundle\Command\:
+    Samynw\MaintenanceToolboxBundle\Command\:
         resource: '../../Command/*'
         tags: ['console.command']
 
-    MaintenanceToolboxBundle\Config\ToolboxConfig: ~
+    Samynw\MaintenanceToolboxBundle\Config\ToolboxConfig: ~
 
-    MaintenanceToolboxBundle\Service\TaskListing:
+    Samynw\MaintenanceToolboxBundle\Service\TaskListing:
         arguments:
             $storeAdapters: !tagged_iterator maintenance_toolbox.store.adapter
 
-    MaintenanceToolboxBundle\Service\LockManipulator:
+    Samynw\MaintenanceToolboxBundle\Service\LockManipulator:
         arguments:
             $storeAdapters: !tagged_iterator maintenance_toolbox.store.adapter
 
-    MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter:
+    Samynw\MaintenanceToolboxBundle\Service\Store\Adapter\PdoAdapter:
         tags: [ 'maintenance_toolbox.store.adapter' ]
 
-    MaintenanceToolboxBundle\Service\FormBuilder\EditConfig: ~
+    Samynw\MaintenanceToolboxBundle\Service\FormBuilder\EditConfig: ~

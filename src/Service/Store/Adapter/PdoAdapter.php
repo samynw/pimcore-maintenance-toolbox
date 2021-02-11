@@ -1,8 +1,8 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Service\Store\Adapter;
+namespace Samynw\MaintenanceToolboxBundle\Service\Store\Adapter;
 
-use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
+use Samynw\MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
 use Pimcore\Db;
 use Symfony\Component\Lock\Key;
 use Symfony\Component\Lock\Store\PdoStore;

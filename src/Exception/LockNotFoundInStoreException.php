@@ -1,6 +1,6 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Exception;
+namespace Samynw\MaintenanceToolboxBundle\Exception;
 
 use Symfony\Component\Lock\Key;
 

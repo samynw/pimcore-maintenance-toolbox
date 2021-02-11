@@ -1,8 +1,8 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Model\Task;
+namespace Samynw\MaintenanceToolboxBundle\Model\Task;
 
-use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
+use Samynw\MaintenanceToolboxBundle\Exception\EmptyPropertyException;
 use Symfony\Component\Lock\Key;
 
 class TaskStatus

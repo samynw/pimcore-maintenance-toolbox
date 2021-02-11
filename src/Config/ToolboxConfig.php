@@ -1,6 +1,6 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Config;
+namespace Samynw\MaintenanceToolboxBundle\Config;
 
 use Pimcore\Config;
 use Symfony\Component\Filesystem\Filesystem;

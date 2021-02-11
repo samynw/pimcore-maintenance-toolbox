@@ -1,12 +1,12 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Service;
+namespace Samynw\MaintenanceToolboxBundle\Service;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
-use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
-use MaintenanceToolboxBundle\Model\Task\TaskStatus;
-use MaintenanceToolboxBundle\Service\Store\Adapter\AdapterInterface;
+use Samynw\MaintenanceToolboxBundle\Exception\EmptyPropertyException;
+use Samynw\MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
+use Samynw\MaintenanceToolboxBundle\Model\Task\TaskStatus;
+use Samynw\MaintenanceToolboxBundle\Service\Store\Adapter\AdapterInterface;
 use Pimcore\Maintenance\Executor;
 use Symfony\Component\Lock\Factory as LockFactory;
 use Symfony\Component\Lock\PersistingStoreInterface;
