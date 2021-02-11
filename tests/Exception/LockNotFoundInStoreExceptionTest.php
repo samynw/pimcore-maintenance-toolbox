@@ -1,8 +1,8 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Exception;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Exception;
 
-use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
+use Samynw\MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Lock\Key;
 

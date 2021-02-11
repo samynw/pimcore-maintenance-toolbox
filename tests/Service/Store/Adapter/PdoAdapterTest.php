@@ -1,9 +1,9 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Service\Store\Adapter;
+namespace Samynw\MaintenanceToolboxBundle\Service\Store\Adapter;
 
 use Doctrine\DBAL\Statement;
-use MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
+use Samynw\MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
 use PHPUnit\Framework\TestCase;
 use Pimcore\Db\Connection;
 use Symfony\Component\Lock\Key;

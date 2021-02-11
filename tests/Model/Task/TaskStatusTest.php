@@ -1,9 +1,9 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Model\Task;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Model\Task;
 
-use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
-use MaintenanceToolboxBundle\Model\Task\TaskStatus;
+use Samynw\MaintenanceToolboxBundle\Exception\EmptyPropertyException;
+use Samynw\MaintenanceToolboxBundle\Model\Task\TaskStatus;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Lock\Key;
 

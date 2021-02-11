@@ -1,8 +1,8 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Exception;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Exception;
 
-use MaintenanceToolboxBundle\Exception\EmptyPropertyException;
+use Samynw\MaintenanceToolboxBundle\Exception\EmptyPropertyException;
 use PHPUnit\Framework\TestCase;
 
 class EmptyPropertyExceptionTest extends TestCase

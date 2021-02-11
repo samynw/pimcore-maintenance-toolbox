@@ -1,10 +1,10 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Command;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Command;
 
-use MaintenanceToolboxBundle\Command\ReleaseLockCommand;
-use MaintenanceToolboxBundle\Config\ToolboxConfig;
-use MaintenanceToolboxBundle\Service\LockManipulator;
+use Samynw\MaintenanceToolboxBundle\Command\ReleaseLockCommand;
+use Samynw\MaintenanceToolboxBundle\Config\ToolboxConfig;
+use Samynw\MaintenanceToolboxBundle\Service\LockManipulator;
 use PHPUnit\Framework\TestCase;
 
 class ReleaseLockCommandTest extends TestCase

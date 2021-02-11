@@ -1,8 +1,8 @@
 <?php
 
-namespace MaintenanceToolboxBundle\Tests\Form;
+namespace Samynw\MaintenanceToolboxBundle\Tests\Form;
 
-use MaintenanceToolboxBundle\Form\ConfigType;
+use Samynw\MaintenanceToolboxBundle\Form\ConfigType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class ConfigTypeTest extends TypeTestCase
