@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Pimcore\Db\Connection;
 use Pimcore\Maintenance\Executor;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Lock\Factory;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\PdoStore;
 
 class TaskListingTest extends TestCase
@@ -20,7 +20,7 @@ class TaskListingTest extends TestCase
 
     protected function setUp(): void
     {
-        $lockMock = $this->createMock(Factory::class);
+        $lockMock = $this->createMock(LockFactory::class);
         $executor = new Executor(
             'pidFileName',
             $this->createMock(LoggerInterface::class),

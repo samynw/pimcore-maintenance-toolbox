@@ -2,6 +2,7 @@
 
 namespace Samynw\MaintenanceToolboxBundle\Service\Store\Adapter;
 
+use Doctrine\DBAL\ForwardCompatibility\Result;
 use Doctrine\DBAL\Statement;
 use Samynw\MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
 use PHPUnit\Framework\TestCase;
@@ -71,9 +72,11 @@ class PdoAdapterTest extends TestCase
 
     public function testCanFetchExpirationDate()
     {
+        $resultMock = $this->createMock(Result::class);
+        $resultMock->method('rowCount')->willReturn(1);
+        $resultMock->method('fetchAssociative')->willReturn(['key_expiration' => time()]);
         $statementMock = $this->mockStatement();
-        $statementMock->method('rowCount')->willReturn(1);
-        $statementMock->method('fetch')->willReturn(['key_expiration' => time()]);
+        $statementMock->method('executeQuery')->willReturn($resultMock);
         $connectionMock = $this->createMock(Connection::class);
         $connectionMock->method('prepare')->willReturn($statementMock);
 
