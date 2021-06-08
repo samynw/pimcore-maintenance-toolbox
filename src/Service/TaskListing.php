@@ -8,7 +8,7 @@ use Samynw\MaintenanceToolboxBundle\Exception\LockNotFoundInStoreException;
 use Samynw\MaintenanceToolboxBundle\Model\Task\TaskStatus;
 use Samynw\MaintenanceToolboxBundle\Service\Store\Adapter\AdapterInterface;
 use Pimcore\Maintenance\Executor;
-use Symfony\Component\Lock\Factory as LockFactory;
+use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\PersistingStoreInterface;
 
 class TaskListing
