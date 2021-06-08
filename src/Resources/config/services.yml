@@ -25,9 +25,6 @@ services:
 
     Samynw\MaintenanceToolboxBundle\Installer:
         public: true
-        arguments:
-            # fetch the bundle via expression language
-            $bundle: "@=service('kernel').getBundle('MaintenanceToolboxBundle')"
 
     # auto-register all commands as services
     Samynw\MaintenanceToolboxBundle\Command\:
