@@ -3,7 +3,7 @@
     "description": "This provides a set of usefull tools for the Pimcore maintenance",
     "type": "pimcore-bundle",
     "require": {
-        "pimcore/pimcore": "^6.8.0"
+        "pimcore/pimcore": "^6.8.0 || ^10.0.0"
     },
     "license": "MIT",
     "authors": [
