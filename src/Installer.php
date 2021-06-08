@@ -4,16 +4,16 @@ namespace Samynw\MaintenanceToolboxBundle;
 
 use Doctrine\DBAL\Migrations\Version;
 use Doctrine\DBAL\Schema\Schema;
+use Pimcore\Extension\Bundle\Installer\AbstractInstaller;
 use Samynw\MaintenanceToolboxBundle\Config\ToolboxConfig;
 use Pimcore\Db\ConnectionInterface;
 use Pimcore\Extension\Bundle\Installer\Exception\InstallationException;
-use Pimcore\Extension\Bundle\Installer\MigrationInstaller;
 use Pimcore\Migrations\MigrationManager;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\Filesystem\Filesystem;
 
-class Installer extends MigrationInstaller
+class Installer extends AbstractInstaller
 {
     /** @var Filesystem */
     private $filesystem;
@@ -22,31 +22,23 @@ class Installer extends MigrationInstaller
 
     /**
      * Installer constructor.
-     * @param BundleInterface $bundle
-     * @param ConnectionInterface $connection
-     * @param MigrationManager $migrationManager
      * @param Filesystem $filesystem
      * @param FileLocator $fileLocator
      */
     public function __construct(
-        BundleInterface $bundle,
-        ConnectionInterface $connection,
-        MigrationManager $migrationManager,
         FileSystem $filesystem,
         FileLocator $fileLocator
-    ) {
-        parent::__construct($bundle, $connection, $migrationManager);
+    )
+    {
+        parent::__construct();
         $this->filesystem = $filesystem;
         $this->fileLocator = $fileLocator;
     }
 
     /**
      * Install the bundle by creating the config file
-     *
-     * @param Schema $schema
-     * @param Version $version
      */
-    public function migrateInstall(Schema $schema, Version $version): void
+    public function install(): void
     {
         $source = $this->fileLocator->locate(
             '@MaintenanceToolboxBundle/Resources/data/' . ToolboxConfig::CONFIG_FILENAME . '.example'
@@ -63,11 +55,8 @@ class Installer extends MigrationInstaller
 
     /**
      * Remove the config file to uninstall the bundle
-     *
-     * @param Schema $schema
-     * @param Version $version
      */
-    public function migrateUninstall(Schema $schema, Version $version): void
+    public function uninstall(): void
     {
         $this->filesystem->remove(ToolboxConfig::getConfigFilePath());
     }
@@ -81,4 +70,26 @@ class Installer extends MigrationInstaller
     {
         return \file_exists(ToolboxConfig::getConfigFilePath());
     }
+
+    /**
+     * No specific requirement, just check if it's not installed yet
+     *
+     * @return bool
+     */
+    public function canBeInstalled(): bool
+    {
+        return !$this->isInstalled();
+    }
+
+    /**
+     * No specific requirement, just check if it's already installed
+     *
+     * @return bool
+     */
+    public function canBeUninstalled():bool
+    {
+        return $this->isInstalled();
+    }
+
+
 }

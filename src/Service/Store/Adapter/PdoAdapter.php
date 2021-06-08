@@ -45,10 +45,10 @@ class PdoAdapter implements AdapterInterface
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(':id', $this->generateKeyId($key));
-        $stmt->execute();
+        $result = $stmt->executeQuery();
 
-        if ($stmt->rowCount() > 0) {
-            $row = $stmt->fetch();
+        if ($result->rowCount() > 0) {
+            $row = $result->fetchAssociative();
             if (!empty($row['key_expiration'])) {
                 return (new \DateTimeImmutable())->setTimestamp($row['key_expiration']);
             }
@@ -82,8 +82,8 @@ class PdoAdapter implements AdapterInterface
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(':id', $this->generateKeyId($key));
-        $stmt->execute();
+        $result = $stmt->executeQuery();
 
-        return $stmt->rowCount();
+        return $result->rowCount() ?? 0;
     }
 }
