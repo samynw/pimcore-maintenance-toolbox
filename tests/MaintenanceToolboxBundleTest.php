@@ -3,12 +3,21 @@
 namespace Samynw\MaintenanceToolboxBundle\Tests;
 
 use Samynw\MaintenanceToolboxBundle\MaintenanceToolboxBundle;
-use Pimcore\Test\KernelTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class MaintenanceToolboxBundleTest extends KernelTestCase
 {
     /** @var MaintenanceToolboxBundle  */
     private $bundle;
+
+    protected static function createKernel(array $options = [])
+    {
+        $kernel = parent::createKernel($options);
+
+        \Pimcore::setKernel($kernel);
+
+        return $kernel;
+    }
 
     protected function setUp(): void
     {
